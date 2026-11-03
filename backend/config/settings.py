@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'kkrtc_db'),
         'USER': os.getenv('POSTGRES_USER', 'kkrtc_user'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'kkrtc_secret_dev'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', '5434'),
         'CONN_MAX_AGE': 60,
