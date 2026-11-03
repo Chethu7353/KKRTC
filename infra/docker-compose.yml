@@ -1,0 +1,23 @@
+# Port 5434 so it never clashes with other PostgreSQL on the host.
+services:
+  postgis:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: kkrtc-postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kkrtc_db}
+      POSTGRES_USER: ${POSTGRES_USER:-kkrtc_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kkrtc_secret_dev}
+    ports:
+      - "${POSTGRES_PORT:-5434}:5432"
+    volumes:
+      - kkrtc_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kkrtc_user -d kkrtc_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  kkrtc_pgdata:
+    driver: local
