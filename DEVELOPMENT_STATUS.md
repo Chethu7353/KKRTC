@@ -1,9 +1,9 @@
 # KKRTC – DEVELOPMENT_STATUS.md
 
 **Project:** KKRTC – Where Is My Bus? V1.0  
-**Phase:** Phase 1 – Foundation (Final Verification & Hardening)  
+**Phase:** Phase 1 – Foundation (Hardening & LTS / DRF 3.18.x Verification)  
 **Status:** **PHASE 1 COMPLETE (ALL VERIFICATIONS PASSED)**  
-**Timestamp:** 2026-11-03 23:14 IST  
+**Timestamp:** 2026-11-03 23:19 IST  
 **Workspace:** `S:\Projects\KKRTC\kkrtc-where-is-my-bus`  
 
 ---
@@ -14,8 +14,8 @@
 |---|---|---|---|
 | **Git** | >= 2.x | 2.53.0.windows.2 | ✅ PASS |
 | **Python** | 3.14.x | 3.14.6 | ✅ PASS |
-| **Django (LTS)** | 5.2.x LTS | 5.2.19 | ✅ PASS (Upgraded from 5.0.6) |
-| **Django REST Framework** | 3.15.x | 3.15.2 | ✅ PASS |
+| **Django (LTS)** | 5.2.x LTS | 5.2.19 | ✅ PASS (LTS Release) |
+| **Django REST Framework** | 3.18.x | 3.18.3 | ✅ PASS (Upgraded from 3.15.2) |
 | **Django Channels** | 4.x | 4.3.2 | ✅ PASS |
 | **Daphne (ASGI)** | 4.x | 4.2.3 | ✅ PASS |
 | **psycopg (binary)** | 3.x | 3.3.6 | ✅ PASS |
@@ -30,11 +30,11 @@
 
 ---
 
-## 2. Security Audit & Exclusion Verification
+## 2. Security Audit & Secrets Verification
 
-- **Git Exclusion Check:** Verified via `git check-ignore -v backend/.env` $\longrightarrow$ properly ignored.
-- **Git Commit Inspection:** Checked all commits. Only `.env.example` (using sanitized generic placeholders) is tracked in Git. Zero secrets committed.
-- **Credential Safety:** No hardcoded passwords or sensitive tokens present in code, docker-compose, or documentation.
+- **Exclusion Check:** `git check-ignore -v backend/.env` confirmed active exclusion via `.gitignore:27`.
+- **Commit Inspection:** Only `.env.example` (using sanitized placeholder values) is tracked. Zero secrets committed.
+- **Credential Hygiene:** Zero hardcoded secrets in settings, compose file, or documentation.
 
 ---
 
@@ -42,6 +42,7 @@
 
 | Check Item | Command | Output / Status | Result |
 |---|---|---|---|
+| **Pip Dependencies Check** | `python -m pip check` | `No broken requirements found.` | **PASS** |
 | **Django System Check** | `python manage.py check` | `System check identified no issues (0 silenced).` | **PASS** |
 | **Django Migration Sanity** | `python manage.py makemigrations --check --dry-run` | `No changes detected` | **PASS** |
 | **Applied Migrations Check** | `python manage.py migrate --check` | Exited code 0 (All migrations applied) | **PASS** |
@@ -54,7 +55,7 @@
 
 ## 4. Phase 2 Readiness
 
-Phase 1 foundation and hardening are completely concluded. The project is fully ready for **Phase 2 – Backend Foundation**:
+Phase 1 foundation and all dependency corrections are finalized:
 1. Custom `UserProfile` model with role-based JWT authentication (`Passenger`, `Driver`, `Conductor`, `Admin`).
 2. PostGIS spatial models (`Bus`, `Route`, `Stop`, `RouteStop`, `Trip`, `DriverAssignment`).
 3. Database migrations and initial seed data for **Ballari ↔ Gangavathi** route corridor.
