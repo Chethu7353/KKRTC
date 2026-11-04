@@ -15,6 +15,8 @@ The app intentionally shows a configuration message when this key is absent. Pla
 
 The checked-in Django URL configuration currently exposes only `/api/health/`. Passenger route/trip search, assigned trips, trip start/stop, authentication, and passenger/pilot GPS endpoints are not present. Until those endpoints are deployed and the mobile API is wired to them, trip search and live tracking remain unavailable; the app does not substitute demo bus positions or telemetry.
 
-## Required brand asset
+## Branding assets
 
-The logo reveal video is registered at `assets/video/kkrtc_logo_reveal.mp4`. The supplied standalone app-logo PNG was not found. Add it at `assets/images/kkrtc_app_logo.png` before replacing the default Flutter launcher artwork in the Android `mipmap-*` resources.
+The supplied logo PNG and reveal video are registered from `assets/images/kkrtc_app_logo.png` and `assets/video/kkrtc_logo_reveal.mp4`. The Android launcher icon uses a square bus-and-pin crop derived from the original PNG, with the adaptive icon background set to deep navy. Regenerate Android icon resources after editing the icon config with `dart run flutter_launcher_icons`.
+
+At launch, the app shows a short navy ambient lead-in, plays the complete reveal video once, and then opens Passenger/Pilot selection. Since the video already contains the complete Kannada wordmark and BUS TRACKER tagline, the static full-logo PNG is reserved for the playback-error fallback instead of repeating the reveal.
