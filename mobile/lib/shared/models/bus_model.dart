@@ -1,4 +1,31 @@
-enum BusServiceType { sarige, kalyanaRatha, vaibhava, rajahamsa, nonStop }
+enum BusServiceType {
+  sarige,
+  karnatakaSarige,
+  kalyanaRatha,
+  vaibhava,
+  rajahamsa,
+  express,
+  nonStop;
+
+  String get label {
+    switch (this) {
+      case BusServiceType.sarige:
+        return 'Karnataka Sarige';
+      case BusServiceType.karnatakaSarige:
+        return 'Karnataka Sarige (Ordinary)';
+      case BusServiceType.kalyanaRatha:
+        return 'Kalyana Ratha (AC Sleeper)';
+      case BusServiceType.vaibhava:
+        return 'Karnataka Vaibhava (Non-AC Express)';
+      case BusServiceType.rajahamsa:
+        return 'Rajahamsa Executive';
+      case BusServiceType.express:
+        return 'Express';
+      case BusServiceType.nonStop:
+        return 'Point-to-Point Non-Stop';
+    }
+  }
+}
 
 class BusModel {
   final String id;
@@ -17,18 +44,5 @@ class BusModel {
     this.modelName = 'Tata LPO 1618 Sarige',
   });
 
-  String get serviceTypeDisplayName {
-    switch (serviceType) {
-      case BusServiceType.sarige:
-        return 'Karnataka Sarige (Ordinary)';
-      case BusServiceType.kalyanaRatha:
-        return 'Kalyana Ratha (AC Sleeper)';
-      case BusServiceType.vaibhava:
-        return 'Karnataka Vaibhava (Non-AC Express)';
-      case BusServiceType.rajahamsa:
-        return 'Rajahamsa Executive';
-      case BusServiceType.nonStop:
-        return 'Point-to-Point Non-Stop';
-    }
-  }
+  String get serviceTypeDisplayName => serviceType.label;
 }

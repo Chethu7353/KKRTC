@@ -17,20 +17,9 @@ abstract class TrackingRepository {
   });
 }
 
-class MockTrackingRepository implements TrackingRepository {
-  bool _passengerLocationSharingActive = false;
-
-  bool get isPassengerSharingActive => _passengerLocationSharingActive;
-
-  void togglePassengerSharing(bool active) {
-    _passengerLocationSharingActive = active;
-  }
-
+class UnavailableTrackingRepository implements TrackingRepository {
   @override
-  Future<TripModel?> getLiveLocation(String tripId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return null;
-  }
+  Future<TripModel?> getLiveLocation(String tripId) async => null;
 
   @override
   Future<bool> submitPassengerLocation({
@@ -39,9 +28,7 @@ class MockTrackingRepository implements TrackingRepository {
     required double longitude,
     required double accuracy,
   }) async {
-    // Demonstration simulated submission
-    await Future.delayed(const Duration(milliseconds: 300));
-    return true;
+    return false;
   }
 
   @override
@@ -52,8 +39,6 @@ class MockTrackingRepository implements TrackingRepository {
     required double speed,
     required double heading,
   }) async {
-    // Demonstration simulated driver telemetry submission
-    await Future.delayed(const Duration(milliseconds: 300));
-    return true;
+    return false;
   }
 }

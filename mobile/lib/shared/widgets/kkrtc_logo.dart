@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/constants/app_colors.dart';
 
 /// Reusable Vector-drawn KKRTC Emblem Logo Widget
@@ -42,9 +43,7 @@ class KkrtcLogo extends StatelessWidget {
               width: size * 0.035,
             ),
           ),
-          child: CustomPaint(
-            painter: _KkrtcEmblemPainter(),
-          ),
+          child: CustomPaint(painter: _KkrtcEmblemPainter()),
         ),
         if (showText) ...[
           SizedBox(height: size * 0.16),
@@ -58,11 +57,13 @@ class KkrtcLogo extends StatelessWidget {
             ),
           ),
           Text(
-            'ಕೆ.ಕೆ.ಆರ್.ಟಿ.ಸಿ',
+            'à²•à³†.à²•à³†.à²†à²°à³.à²Ÿà²¿.à²¸à²¿',
             style: TextStyle(
               fontSize: size * 0.16,
               fontWeight: FontWeight.w600,
-              color: isLightOnDark ? AppColors.softYellow : AppColors.secondaryText,
+              color: isLightOnDark
+                  ? AppColors.softYellow
+                  : AppColors.secondaryText,
             ),
           ),
         ],
@@ -83,7 +84,11 @@ class _KkrtcEmblemPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final busRect = RRect.fromRectAndRadius(
-      Rect.fromCenter(center: Offset(w * 0.5, h * 0.5), width: w * 0.58, height: h * 0.44),
+      Rect.fromCenter(
+        center: Offset(w * 0.5, h * 0.5),
+        width: w * 0.58,
+        height: h * 0.44,
+      ),
       Radius.circular(w * 0.08),
     );
     canvas.drawRRect(busRect, busPaint);
@@ -94,7 +99,11 @@ class _KkrtcEmblemPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final windowRect = RRect.fromRectAndRadius(
-      Rect.fromCenter(center: Offset(w * 0.5, h * 0.42), width: w * 0.46, height: h * 0.16),
+      Rect.fromCenter(
+        center: Offset(w * 0.5, h * 0.42),
+        width: w * 0.46,
+        height: h * 0.16,
+      ),
       Radius.circular(w * 0.04),
     );
     canvas.drawRRect(windowRect, windowPaint);
@@ -110,8 +119,16 @@ class _KkrtcEmblemPainter extends CustomPainter {
       ..strokeWidth = w * 0.02
       ..strokeCap = StrokeCap.round;
 
-    canvas.drawLine(Offset(w * 0.40, h * 0.58), Offset(w * 0.60, h * 0.58), grillePaint);
-    canvas.drawLine(Offset(w * 0.42, h * 0.63), Offset(w * 0.58, h * 0.63), grillePaint);
+    canvas.drawLine(
+      Offset(w * 0.40, h * 0.58),
+      Offset(w * 0.60, h * 0.58),
+      grillePaint,
+    );
+    canvas.drawLine(
+      Offset(w * 0.42, h * 0.63),
+      Offset(w * 0.58, h * 0.63),
+      grillePaint,
+    );
   }
 
   @override

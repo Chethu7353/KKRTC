@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/constants/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -7,10 +8,13 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool obscureText;
-  final Widget? prefixIcon;
+
+  /// Accept either an [IconData] (most common case) or a full [Widget].
+  final IconData? prefixIcon;
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
   final bool readOnly;
   final VoidCallback? onTap;
 
@@ -25,6 +29,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.onChanged,
+    this.onSubmitted,
     this.readOnly = false,
     this.onTap,
   });
@@ -51,6 +56,7 @@ class CustomTextField extends StatelessWidget {
           onTap: onTap,
           validator: validator,
           onChanged: onChanged,
+          onFieldSubmitted: onSubmitted,
           style: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w500,
@@ -58,7 +64,7 @@ class CustomTextField extends StatelessWidget {
           ),
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: prefixIcon,
+            prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
             suffixIcon: suffixIcon,
           ),
         ),

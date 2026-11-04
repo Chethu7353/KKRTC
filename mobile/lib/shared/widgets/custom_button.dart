@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
@@ -9,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final IconData? icon;
   final Color? backgroundColor;
   final Color? textColor;
+  final Color? outlinedBorderColor;
   final double? width;
 
   const CustomButton({
@@ -20,6 +22,7 @@ class CustomButton extends StatelessWidget {
     this.icon,
     this.backgroundColor,
     this.textColor,
+    this.outlinedBorderColor,
     this.width,
   });
 
@@ -28,21 +31,21 @@ class CustomButton extends StatelessWidget {
     final effectiveWidth = width ?? double.infinity;
 
     if (isOutlined) {
+      final borderColor =
+          outlinedBorderColor ?? backgroundColor ?? AppColors.deepNavy;
+      final contentColor = textColor ?? borderColor;
       return SizedBox(
         width: effectiveWidth,
         height: 52,
         child: OutlinedButton(
           onPressed: isLoading ? null : onPressed,
           style: OutlinedButton.styleFrom(
-            side: BorderSide(
-              color: backgroundColor ?? AppColors.deepNavy,
-              width: 1.5,
-            ),
+            side: BorderSide(color: borderColor, width: 1.5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          child: _buildContent(textColor ?? backgroundColor ?? AppColors.deepNavy),
+          child: _buildContent(contentColor),
         ),
       );
     }
@@ -70,10 +73,7 @@ class CustomButton extends StatelessWidget {
       return SizedBox(
         width: 22,
         height: 22,
-        child: CircularProgressIndicator(
-          strokeWidth: 2.5,
-          color: contentColor,
-        ),
+        child: CircularProgressIndicator(strokeWidth: 2.5, color: contentColor),
       );
     }
 

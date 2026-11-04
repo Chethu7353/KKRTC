@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+
 import 'api_config.dart';
 
 /// Centralized Dio HTTP Client for KKRTC
@@ -41,7 +42,11 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    return _dio.get<T>(path, queryParameters: queryParameters, options: options);
+    return _dio.get<T>(
+      path,
+      queryParameters: queryParameters,
+      options: options,
+    );
   }
 
   Future<Response<T>> post<T>(
@@ -50,6 +55,11 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    return _dio.post<T>(path, data: data, queryParameters: queryParameters, options: options);
+    return _dio.post<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    );
   }
 }

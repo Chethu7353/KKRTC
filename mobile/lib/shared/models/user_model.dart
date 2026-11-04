@@ -1,4 +1,4 @@
-enum UserRole { passenger, driver, conductor, admin }
+enum UserRole { passenger, pilot }
 
 class UserModel {
   final String id;
@@ -17,6 +17,5 @@ class UserModel {
     this.preferredLanguage = 'en',
   });
 
-  bool get isDriver => role == UserRole.driver || role == UserRole.conductor;
-  bool get isAdmin => role == UserRole.admin;
+  bool get isPilot => role == UserRole.pilot;
 }
