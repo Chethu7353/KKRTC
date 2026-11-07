@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kkrtc_bus/core/storage/app_state_storage.dart';
 import 'package:kkrtc_bus/features/authentication/role_selection_screen.dart';
 
 void main() {
+  setUp(() {
+    AppStateStorage.setMockInitialValues({});
+  });
+
   testWidgets('account selection offers only Passenger and Pilot', (
     WidgetTester tester,
   ) async {
@@ -37,7 +42,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 800));
       await tester.pumpAndSettle();
-      expect(find.text('Pilot journey'), findsOneWidget);
+      expect(find.text('Pilot Journey'), findsOneWidget);
       expect(find.text('Passenger dashboard'), findsNothing);
     },
   );

@@ -7,6 +7,8 @@ import '../../shared/models/trip_model.dart';
 import '../../shared/repositories/bus_repository.dart';
 import '../../shared/widgets/bus_card.dart';
 import '../../shared/widgets/custom_text_field.dart';
+import '../../core/storage/app_state_storage.dart';
+import '../../shared/widgets/vac_teams_footer.dart';
 import '../live_tracking/live_tracking_screen.dart';
 
 class BusSearchScreen extends StatefulWidget {
@@ -36,6 +38,21 @@ class _BusSearchScreenState extends State<BusSearchScreen> {
     super.initState();
     _fromController = TextEditingController(text: widget.initialFrom ?? '');
     _toController = TextEditingController(text: widget.initialTo ?? '');
+    _initSearchAndRestore();
+  }
+
+  Future<void> _initSearchAndRestore() async {
+    if (widget.initialFrom == null && widget.initialTo == null) {
+      final saved = await AppStateStorage.getSearchQuery();
+      if (mounted) {
+        if (saved['source']?.isNotEmpty == true) {
+          _fromController.text = saved['source']!;
+        }
+        if (saved['destination']?.isNotEmpty == true) {
+          _toController.text = saved['destination']!;
+        }
+      }
+    }
     _executeSearch();
   }
 
@@ -47,6 +64,10 @@ class _BusSearchScreenState extends State<BusSearchScreen> {
   }
 
   void _executeSearch() async {
+    AppStateStorage.saveSearchQuery(
+      source: _fromController.text.trim(),
+      destination: _toController.text.trim(),
+    );
     setState(() => _isLoading = true);
     final results = await _busRepository.searchTrips(
       fromStop: _fromController.text.trim(),
@@ -82,11 +103,12 @@ class _BusSearchScreenState extends State<BusSearchScreen> {
   }
 
   void _selectRecent(String recent) {
-    final parts = recent.split(' âž” ');
+    final delimiter = recent.contains(' → ') ? ' → ' : ' ➔ ';
+    final parts = recent.split(delimiter);
     if (parts.length == 2) {
       setState(() {
-        _fromController.text = parts[0];
-        _toController.text = parts[1];
+        _fromController.text = parts[0].trim();
+        _toController.text = parts[1].trim();
       });
       _executeSearch();
     }
@@ -118,6 +140,9 @@ class _BusSearchScreenState extends State<BusSearchScreen> {
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _buildResultsList(),
+          ),
+          const VacTeamsFooter(
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           ),
         ],
       ),

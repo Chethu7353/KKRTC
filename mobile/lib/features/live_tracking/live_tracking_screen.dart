@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../shared/models/trip_model.dart';
-import '../../shared/widgets/google_map_panel.dart';
+import '../../shared/widgets/osm_map_panel.dart';
 import '../../shared/widgets/status_badge.dart';
+import '../../shared/widgets/vac_teams_footer.dart';
 import 'passenger_assisted_tracking_sheet.dart';
 
 class LiveTrackingScreen extends StatelessWidget {
@@ -32,7 +33,7 @@ class LiveTrackingScreen extends StatelessWidget {
         children: [
           SizedBox(
             height: 420,
-            child: GoogleMapPanel(
+            child: OsmMapPanel(
               busLocation: hasBusPosition
                   ? LatLng(
                       currentTrip!.currentLatitude!,
@@ -108,6 +109,7 @@ class LiveTrackingScreen extends StatelessWidget {
               ),
             ),
           ),
+          const VacTeamsFooter(padding: EdgeInsets.only(top: 16, bottom: 16)),
         ],
       ),
     );

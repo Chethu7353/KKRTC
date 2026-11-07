@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../shared/models/user_model.dart';
+import '../../core/storage/app_state_storage.dart';
 import '../../shared/widgets/custom_button.dart';
+import '../../shared/widgets/vac_teams_footer.dart';
 import '../driver/driver_dashboard_screen.dart';
 import '../passenger/passenger_main_screen.dart';
 
@@ -82,6 +84,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     if (!mounted) return;
     setState(() => _isVerifying = false);
 
+    await AppStateStorage.saveAuthenticatedSession(
+      role: widget.role,
+      phoneNumber: widget.phoneNumber,
+    );
+
+    if (!mounted) return;
     final dashboard = widget.role == UserRole.pilot
         ? const DriverDashboardScreen()
         : const PassengerMainScreen();
@@ -233,6 +241,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ),
                 ],
               ),
+              const SizedBox(height: 24),
+              const VacTeamsFooter(padding: EdgeInsets.symmetric(vertical: 12)),
             ],
           ),
         ),

@@ -52,7 +52,7 @@ class RouteCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${route.distanceKm} km â€¢ Approx ${route.durationFormatted}',
+                      '${route.distanceKm} km • Approx ${route.durationFormatted}',
                       style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.secondaryText,

@@ -52,11 +52,11 @@ class TripModel {
     this.distanceRemainingKm,
   });
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Convenience accessors used by screens Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
-  /// Alias for [trackingSource] Ã¢â‚¬â€œ used by live_tracking_screen and badge widgets.
+  // ── Convenience accessors used by screens ──────────────────────
+  /// Alias for [trackingSource] – used by live_tracking_screen and badge widgets.
   TrackingSource get source => trackingSource;
 
-  /// Speed in km/h Ã¢â‚¬â€œ alias to match screens that use `currentSpeedKmph`.
+  /// Speed in km/h – alias to match screens that use `currentSpeedKmph`.
   double? get currentSpeedKmph => speedKmh;
 
   /// Display name of the next stop (from nextStopModel if available, else nextStop).

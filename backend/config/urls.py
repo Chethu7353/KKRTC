@@ -2,7 +2,7 @@
 URL configuration for KKRTC - Where Is My Bus?
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.http import JsonResponse
 
 def health_check(request):
@@ -16,4 +16,5 @@ def health_check(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/health/', health_check, name='api-health'),
+    path('api/trips/', include('apps.trips.urls')),
 ]

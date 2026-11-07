@@ -57,7 +57,7 @@ class KkrtcLogo extends StatelessWidget {
             ),
           ),
           Text(
-            'à²•à³†.à²•à³†.à²†à²°à³.à²Ÿà²¿.à²¸à²¿',
+            'ಕೆ.ಕೆ.ಆರ್.ಟಿ.ಸಿ',
             style: TextStyle(
               fontSize: size * 0.16,
               fontWeight: FontWeight.w600,

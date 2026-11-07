@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/storage/app_state_storage.dart';
+import '../../shared/models/user_model.dart';
 import '../authentication/role_selection_screen.dart';
+import '../driver/driver_dashboard_screen.dart';
+import '../passenger/passenger_main_screen.dart';
 
 enum _SplashPhase { ambient, video, fallback }
 
@@ -23,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   VideoPlayerController? _videoController;
   late final AnimationController _fallbackFade;
+  late final Animation<double> _fallbackAnimation;
   Timer? _ambientTimer;
   Timer? _fallbackTimer;
   Timer? _completionTimer;
@@ -35,6 +40,10 @@ class _SplashScreenState extends State<SplashScreen>
     _fallbackFade = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 650),
+    );
+    _fallbackAnimation = CurvedAnimation(
+      parent: _fallbackFade,
+      curve: Curves.easeOut,
     );
     _ambientTimer = Timer(const Duration(milliseconds: 1500), _startVideo);
   }
@@ -71,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen>
         _completionTimer == null) {
       _completionTimer = Timer(
         const Duration(milliseconds: 500),
-        _navigateToRoleSelection,
+        _navigateToNextScreen,
       );
     }
   }
@@ -85,18 +94,35 @@ class _SplashScreenState extends State<SplashScreen>
     _fallbackFade.forward();
     _fallbackTimer = Timer(
       const Duration(milliseconds: 3000),
-      _navigateToRoleSelection,
+      _navigateToNextScreen,
     );
   }
 
-  void _navigateToRoleSelection() {
+  Future<void> _navigateToNextScreen() async {
     if (!mounted || _navigated) return;
     _navigated = true;
+    _ambientTimer?.cancel();
+    _fallbackTimer?.cancel();
+    _completionTimer?.cancel();
+    _videoController?.removeListener(_onVideoUpdate);
+
+    final isAuth = await AppStateStorage.isAuthenticated();
+    final role = await AppStateStorage.getRole();
+
+    Widget target;
+    if (isAuth && role != null) {
+      target = role == UserRole.pilot
+          ? const DriverDashboardScreen()
+          : const PassengerMainScreen();
+    } else {
+      target = const RoleSelectionScreen();
+    }
+
+    if (!mounted) return;
     Navigator.of(context).pushReplacement(
       PageRouteBuilder<void>(
         transitionDuration: const Duration(milliseconds: 500),
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const RoleSelectionScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) => target,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
       ),
@@ -138,10 +164,7 @@ class _SplashScreenState extends State<SplashScreen>
           if (_phase == _SplashPhase.fallback)
             Center(
               child: FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: _fallbackFade,
-                  curve: Curves.easeOut,
-                ),
+                opacity: _fallbackAnimation,
                 child: _FallbackLogo(asset: _logoAsset),
               ),
             ),

@@ -30,6 +30,17 @@ class ApiConfig {
 
   // Driver Endpoints
   static const String driverAssignedTripsEndpoint = '/driver/assigned-trips/';
-  static const String driverStartTripEndpoint = '/driver/trips/start/';
-  static const String driverStopTripEndpoint = '/driver/trips/stop/';
+  static const String driverStartTripEndpoint = '/trips/start/';
+  static const String driverStopTripEndpoint = '/trips/end/';
+
+  static Uri get activeTripsWebSocketUri {
+    final apiUri = Uri.parse(activeBaseUrl);
+    final basePath = apiUri.path.replaceFirst(RegExp(r'/api/?$'), '');
+    return apiUri.replace(
+      scheme: apiUri.scheme == 'https' ? 'wss' : 'ws',
+      path: '$basePath/ws/active-trips/',
+      query: null,
+      fragment: null,
+    );
+  }
 }

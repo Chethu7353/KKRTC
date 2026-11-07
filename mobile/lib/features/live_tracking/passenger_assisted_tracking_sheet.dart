@@ -179,7 +179,7 @@ class _PassengerAssistedTrackingSheetState
                         ),
                       ),
                       Text(
-                        '${widget.trip.route.sourceName} Ã¢Å¾â€ ${widget.trip.route.destinationName} Ã¢â‚¬Â¢ ${widget.trip.bus.serviceType.label}',
+                        '${widget.trip.route.sourceName} → ${widget.trip.route.destinationName} • ${widget.trip.bus.serviceType.label}',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors.secondaryText,

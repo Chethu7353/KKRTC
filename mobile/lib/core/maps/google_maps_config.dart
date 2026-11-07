@@ -1,4 +1,7 @@
+import 'map_config.dart';
+
+@Deprecated('Use MapConfig for OpenStreetMap instead')
 class GoogleMapsConfig {
-  static const apiKey = String.fromEnvironment('GOOGLE_MAPS_API_KEY');
-  static bool get isConfigured => apiKey.trim().isNotEmpty;
+  static const apiKey = '';
+  static bool get isConfigured => MapConfig.isConfigured;
 }

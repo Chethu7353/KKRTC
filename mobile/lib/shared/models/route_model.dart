@@ -19,7 +19,7 @@ class RouteModel {
     this.intermediateStops = const [],
   });
 
-  String get routeName => '$sourceName â†” $destinationName';
+  String get routeName => '$sourceName ↔ $destinationName';
   String get durationFormatted =>
       '${(estimatedMinutes / 60).floor()}h ${estimatedMinutes % 60}m';
 }

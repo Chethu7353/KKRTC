@@ -4,7 +4,9 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../shared/models/user_model.dart';
 import '../../shared/widgets/custom_button.dart';
+import '../../core/storage/app_state_storage.dart';
 import '../../shared/widgets/kkrtc_logo.dart';
+import '../../shared/widgets/vac_teams_footer.dart';
 import 'otp_verification_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,6 +22,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedPhone();
+  }
+
+  Future<void> _loadSavedPhone() async {
+    final phone = await AppStateStorage.getPhoneNumber();
+    if (phone != null && phone.isNotEmpty && mounted) {
+      final raw = phone.replaceAll(RegExp(r'^\+91\s*'), '').trim();
+      if (raw.length <= 10) {
+        setState(() => _phoneController.text = raw);
+      }
+    }
+  }
 
   void _handleSendOtp() async {
     if (!_formKey.currentState!.validate()) return;
@@ -133,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: const Row(
                                 children: [
                                   Text(
-                                    'ðŸ‡®ðŸ‡³ +91',
+                                    '🇮🇳 +91',
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
@@ -221,6 +239,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 20),
+                const VacTeamsFooter(
+                  padding: EdgeInsets.symmetric(vertical: 12),
                 ),
               ],
             ),

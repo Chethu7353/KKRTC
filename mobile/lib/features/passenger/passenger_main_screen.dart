@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
+import '../../core/storage/app_state_storage.dart';
 import '../bus_search/bus_search_screen.dart';
 import '../live_tracking/live_tracking_screen.dart';
 import '../profile/profile_screen.dart';
@@ -18,8 +19,24 @@ class PassengerMainScreen extends StatefulWidget {
 class _PassengerMainScreenState extends State<PassengerMainScreen> {
   int _currentIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _restoreSavedTab();
+  }
+
+  Future<void> _restoreSavedTab() async {
+    final savedIndex = await AppStateStorage.getPassengerTabIndex();
+    if (mounted && savedIndex >= 0 && savedIndex <= 4) {
+      setState(() => _currentIndex = savedIndex);
+    }
+  }
+
   void _navigateTo(int index) {
-    setState(() => _currentIndex = index);
+    if (index >= 0 && index <= 4) {
+      setState(() => _currentIndex = index);
+      AppStateStorage.savePassengerTabIndex(index);
+    }
   }
 
   @override
@@ -36,7 +53,7 @@ class _PassengerMainScreenState extends State<PassengerMainScreen> {
       body: IndexedStack(index: _currentIndex, children: tabs),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
-        onDestinationSelected: (index) => setState(() => _currentIndex = index),
+        onDestinationSelected: _navigateTo,
         backgroundColor: AppColors.white,
         elevation: 8,
         shadowColor: AppColors.deepNavy.withValues(alpha: 0.1),

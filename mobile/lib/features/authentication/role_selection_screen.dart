@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../shared/models/user_model.dart';
+import '../../core/storage/app_state_storage.dart';
 import '../../shared/widgets/kkrtc_logo.dart';
+import '../../shared/widgets/vac_teams_footer.dart';
 import 'login_screen.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
 
   void _select(BuildContext context, UserRole role) {
+    AppStateStorage.saveRole(role);
     Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (_) => LoginScreen(role: role)));
   }
@@ -50,6 +53,8 @@ class RoleSelectionScreen extends StatelessWidget {
               icon: Icons.badge_rounded,
               onTap: () => _select(context, UserRole.pilot),
             ),
+            const SizedBox(height: 24),
+            const VacTeamsFooter(padding: EdgeInsets.symmetric(vertical: 16)),
           ],
         ),
       ),

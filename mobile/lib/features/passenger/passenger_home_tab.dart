@@ -7,6 +7,7 @@ import '../../shared/repositories/bus_repository.dart';
 import '../../shared/widgets/bus_card.dart';
 import '../../shared/widgets/custom_button.dart';
 import '../bus_search/bus_search_screen.dart';
+import '../../shared/widgets/vac_teams_footer.dart';
 import '../live_tracking/live_tracking_screen.dart';
 
 class PassengerHomeTab extends StatefulWidget {
@@ -184,6 +185,9 @@ class _PassengerHomeTabState extends State<PassengerHomeTab> {
                       );
                     },
                   ),
+                const VacTeamsFooter(
+                  padding: EdgeInsets.only(top: 24, bottom: 20),
+                ),
               ],
             ),
           ),

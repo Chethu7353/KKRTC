@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
+import '../../core/storage/app_state_storage.dart';
+import '../../shared/widgets/vac_teams_footer.dart';
 import '../authentication/role_selection_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,6 +17,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isKannada = false;
   bool _notificationsEnabled = true;
   bool _arrivalAlertsEnabled = true;
+  String _phoneNumber = '+91 98765 43210';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStoredUserData();
+  }
+
+  Future<void> _loadStoredUserData() async {
+    final phone = await AppStateStorage.getPhoneNumber();
+    if (phone != null && phone.isNotEmpty && mounted) {
+      setState(() => _phoneNumber = phone);
+    }
+  }
 
   void _showHelpDialog() {
     showDialog(
@@ -87,9 +103,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _handleLogout() {
-    showDialog(
+    showDialog<bool>(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -100,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
               child: const Text('Cancel'),
             ),
             ElevatedButton(
@@ -108,21 +124,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 backgroundColor: AppColors.errorRed,
                 foregroundColor: AppColors.white,
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const RoleSelectionScreen(),
-                  ),
-                  (route) => false,
-                );
-              },
+              onPressed: () => Navigator.of(dialogContext).pop(true),
               child: const Text('Log Out'),
             ),
           ],
         );
       },
-    );
+    ).then((confirmed) async {
+      if (confirmed == true && mounted) {
+        await AppStateStorage.clearSession();
+        if (!mounted) return;
+        Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+          MaterialPageRoute<void>(builder: (_) => const RoleSelectionScreen()),
+          (route) => false,
+        );
+      }
+    });
   }
 
   @override
@@ -155,13 +172,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 SwitchListTile(
                   title: const Text(
-                    'App Language: ÃƒÂ Ã‚Â²Ã¢â‚¬Â¢ÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â³Ã‚ÂÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â²Ã‚Â¡ (Kannada)',
+                    'App Language: ಕನ್ನಡ (Kannada)',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                   ),
                   subtitle: Text(
-                    _isKannada
-                        ? 'ÃƒÂ Ã‚Â²Ã¢â‚¬Â¢ÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â³Ã‚ÂÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â²Ã‚Â¡ ÃƒÂ Ã‚Â²Ã‚Â¸ÃƒÂ Ã‚Â²Ã¢â‚¬Â¢ÃƒÂ Ã‚Â³Ã‚ÂÃƒÂ Ã‚Â²Ã‚Â°ÃƒÂ Ã‚Â²Ã‚Â¿ÃƒÂ Ã‚Â²Ã‚Â¯ÃƒÂ Ã‚Â²Ã‚ÂµÃƒÂ Ã‚Â²Ã‚Â¾ÃƒÂ Ã‚Â²Ã¢â‚¬â€ÃƒÂ Ã‚Â²Ã‚Â¿ÃƒÂ Ã‚Â²Ã‚Â¦ÃƒÂ Ã‚Â³Ã¢â‚¬Â '
-                        : 'English is active',
+                    _isKannada ? 'ಕನ್ನಡ ಸಕ್ರಿಯವಾಗಿದೆ' : 'English is active',
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.secondaryText,
@@ -175,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SnackBar(
                         content: Text(
                           val
-                              ? 'ÃƒÂ Ã‚Â²Ã‚Â­ÃƒÂ Ã‚Â²Ã‚Â¾ÃƒÂ Ã‚Â²Ã‚Â·ÃƒÂ Ã‚Â³Ã¢â‚¬Â ÃƒÂ Ã‚Â²Ã‚Â¯ÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â³Ã‚ÂÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â³Ã‚Â ÃƒÂ Ã‚Â²Ã¢â‚¬Â¢ÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â³Ã‚ÂÃƒÂ Ã‚Â²Ã‚Â¨ÃƒÂ Ã‚Â²Ã‚Â¡ÃƒÂ Ã‚Â²Ã¢â‚¬Â¢ÃƒÂ Ã‚Â³Ã‚ÂÃƒÂ Ã‚Â²Ã¢â‚¬Â¢ÃƒÂ Ã‚Â³Ã¢â‚¬Â  ÃƒÂ Ã‚Â²Ã‚Â¬ÃƒÂ Ã‚Â²Ã‚Â¦ÃƒÂ Ã‚Â²Ã‚Â²ÃƒÂ Ã‚Â²Ã‚Â¾ÃƒÂ Ã‚Â²Ã‚Â¯ÃƒÂ Ã‚Â²Ã‚Â¿ÃƒÂ Ã‚Â²Ã‚Â¸ÃƒÂ Ã‚Â²Ã‚Â²ÃƒÂ Ã‚Â²Ã‚Â¾ÃƒÂ Ã‚Â²Ã¢â‚¬â€ÃƒÂ Ã‚Â²Ã‚Â¿ÃƒÂ Ã‚Â²Ã‚Â¦ÃƒÂ Ã‚Â³Ã¢â‚¬Â '
+                              ? 'ಭಾಷೆಯನ್ನು ಕನ್ನಡಕ್ಕೆ ಬದಲಾಯಿಸಲಾಗಿದೆ'
                               : 'Language set to English',
                         ),
                       ),
@@ -250,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                   ),
                   subtitle: const Text(
-                    'Version 1.0.0 ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Ballari Division Corridor',
+                    'Version 1.0.0 • Ballari Division Corridor',
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.secondaryText,
@@ -289,7 +304,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: _handleLogout,
             ),
 
-            const SizedBox(height: 32),
+            const VacTeamsFooter(padding: EdgeInsets.only(top: 24, bottom: 20)),
+
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -316,11 +333,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Karnataka Commuter',
                   style: TextStyle(
                     fontSize: 16,
@@ -328,17 +345,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: AppColors.primaryText,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  '+91 98765 43210',
-                  style: TextStyle(
+                  _phoneNumber,
+                  style: const TextStyle(
                     fontSize: 13,
                     color: AppColors.secondaryText,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text(
+                const SizedBox(height: 4),
+                const Text(
                   'Verified Passenger Account',
                   style: TextStyle(
                     fontSize: 11,
